@@ -1,6 +1,6 @@
 import { query } from "../../config/db.config.js"
 
-export const connectDb = async () => {
+export const connectDB = async () => {
     try {
         const { rows } = await query('SELECT NOW()');
         return rows[0]
