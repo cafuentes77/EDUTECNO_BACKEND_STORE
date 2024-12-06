@@ -3,6 +3,8 @@ import { serverInit } from './services/serverInit.js';
 
 import UserRouter  from './routes/usuario.routes.js';
 
+import { errorHandler } from './middlewares/error.middleware.js';
+
 
 
 const app = express();
@@ -13,5 +15,6 @@ app.use(urlencoded({ extended: true }));
 
 app.use('/api/v1', UserRouter);
 
+app.use(errorHandler)
 
 serverInit(app, PORT)
