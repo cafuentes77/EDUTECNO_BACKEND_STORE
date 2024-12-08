@@ -3,15 +3,15 @@ import { ValidationError } from "../../errors/TypesError.js"
 
 export class Validation {
     static isNonEmptyString(value, fieldName) {
-        if(typeof value !== 'string' || value.trim() === '') {
-            throw new ValidationError(`${fieldName} no puede ser una cadena de texto vacía`, error)
+        if (typeof value !== 'string' || value.trim() === "") {
+            throw new ValidationError(`El campo ${fieldName} no puede ser una cadena de texto vacía`)
         }
         return value
     }
 
     static name(value, fieldName) {
         const regex = /^[a-zA-ZÁ-ÿñÑ\s]+$/
-        if(regex.test(value)) {
+        if (!regex.test(value)) {
             throw new ValidationError(`${fieldName} debe contener solo letras y espacios`)
         }
         return value
@@ -19,8 +19,8 @@ export class Validation {
 
     static email(value) {
         const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-        if(!emailRegex.test(value)) {
-            throw new ValidationError('El correo no es válido' )
+        if (!emailRegex.test(value)) {
+            throw new ValidationError('El correo no es válido')
         }
 
         return value;
@@ -29,22 +29,22 @@ export class Validation {
     static isNumberInRange(value, min, max, fieldName) {
         const number = Number(value);
 
-        if(isNaN(number)) throw new ValidationError(`${fieldName} debe ser un número`);
-        if(min > number > max) throw new ValidationError(`${fieldName} debe estar entre ${min} y ${max}`);
+        if (isNaN(number)) throw new ValidationError(`${fieldName} debe ser un número`);
+        if (min > number > max) throw new ValidationError(`${fieldName} debe estar entre ${min} y ${max}`);
 
-        return number
+        return number;
     }
 
     static isPositiveInteger(value, fieldName) { //Para precios 
         const number = Number(value);
-        if(!Number.isInteger(number) || number <= 0) {
-            throw new ValidationError(`${fieldName} debe ser un número entero positivo`)
+        if (!Number.isInteger(number) || number <= 0) {
+            throw new ValidationError(`${fieldName} debe ser un número entero positivo`);
         }
     }
 
     static isNegativeInteger(value, fieldName) {
         const number = Number(value);
-        if(!Number.isInteger(number) || number < 0) {
+        if (!Number.isInteger(number) || number < 0) {
             throw new ValidationError(`${fieldName} debe ser un número entero negativo`)
         }
     }
@@ -52,19 +52,26 @@ export class Validation {
     static isValidDate(value, fieldName) {
         const date = new Date(value);
 
-        if(isNaN(date.getTime())) throw new ValidationError(`${fieldName} debe ser una fecha valida (YYYY-MM-DD)`);
-        return date
+        if (isNaN(date.getTime())) throw new ValidationError(`${fieldName} debe ser una fecha valida (YYYY-MM-DD)`);
+        return date;
     }
 
     static postalCode(value, fieldName) {
         const regex = /^\d{7}$/;
 
-        if(!regex.test(value)) throw new ValidationError(`${fieldName} debe ser un código postal válido de 7 dígitos`)
+        if (!regex.test(value)) throw new ValidationError(`${fieldName} debe ser un código postal válido de 7 dígitos`)
         return value
     }
 
     static isBoolean(value, fieldName) {
-        if(typeof value !== 'boolean') throw new ValidationError(`${fieldName} debe ser verdadero o falso`)
-        return value
+        if (typeof value !== 'boolean') throw new ValidationError(`${fieldName} debe ser verdadero o falso`)
+        return value;
     }
+
+    static phone(value) {
+        const regexPhone = /^(\+?56)?(\s?)(0?9)(\s?)[98765432]\d{7}$/;
+        if (!regexPhone.test(value)) throw new ValidationError('El número de teléfono debe ser válido en Chile');
+        return value;
+    }
+
 }

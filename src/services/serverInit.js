@@ -1,3 +1,4 @@
+import { InternalServerError } from "../errors/TypesError.js";
 import { initializeDB } from "./initializeDB.js";
 
 
@@ -12,6 +13,6 @@ export const serverInit = async(app, port) => {
             console.log(`Servidor andando en el puerto: ${port}⚡`);
         });
     } catch (error) {
-        console.error(error.message);
+        throw new InternalServerError('Error al arrancar el servidor',  error)
     }
 }

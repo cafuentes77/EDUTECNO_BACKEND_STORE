@@ -1,7 +1,7 @@
 import { CustomError } from "./CustomError.js";
 
 
-export class ValidatioError extends CustomError {
+export class ValidationError extends CustomError {
     constructor(message, details) {
         super(message || 'Error de validación', 400, details);
     }
