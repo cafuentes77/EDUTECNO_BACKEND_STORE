@@ -1,10 +1,11 @@
 import { InternalServerError } from "../../errors/TypesError";
+import { query } from "../../config/db.config.js";
 
 /**
  * Crea un nuevo registro en una tabla especifica a traves de un objeto
  * @param {string} tableName - Nombe de la tabla en la base de datos
- * @param {object} data - Datos a insertar en la tabla
- * @returns {promise<object}
+ * @param {object} data - - Datos que se enviaran a registrar
+ * @returns {promise<object} - Retorna el registro creado en formato de objeto
  */
 
 export const createRecord = async(tableName, data) => {
