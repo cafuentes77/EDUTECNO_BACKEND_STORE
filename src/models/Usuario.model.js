@@ -1,7 +1,9 @@
 import { v4 as uuidv4 } from 'uuid'
 import { query } from '../config/db.config.js';
 import { DataBaseError, ValidationError } from '../errors/TypesError.js';
-import { Validation } from '../utils/validate/validate.js';
+import { Validation } from '../utils/validate/Validate.js';
+import { createRecord, findActiveRecordById, findAllActiveRecords } from '../utils/crud/crudUtils.js';
+
 
 
 export class Usuario {
@@ -69,23 +71,36 @@ export class Usuario {
 
     static async create(data) {
         try {
-            /*Usuario.validate(data);*/
-
-            const { nombre, apellido_paterno, apellido_materno, email, telefono } = data;
+            /*  Usuario.validate(data); */
             const id = uuidv4();
             const active = true;
 
-            const insertQuery = `
-                INSERT INTO usuarios (id, nombre, apellido_paterno, apellido_materno, email, telefono, active)
-                VALUES ($1, $2, $3, $4, $5, $6, $7)
-                RETURNING *;
-            `
-            const values = [id, nombre, apellido_paterno, apellido_materno, email, telefono, active];
+            const user = { id, ...data, active }
 
-            const { rows } = await query(insertQuery, values);
-            return rows[0]
+            const userRecorded = await createRecord('usuarios', user)
+            return userRecorded
+
         } catch (error) {
             throw new DataBaseError('Error al registrar el usuario en la base de datos', error)
+        }
+    }
+
+    static async findAllActive() {
+        try {
+            const users = await findAllActiveRecords('usuarios');
+            return users;
+        } catch (error) {
+            throw new DataBaseError(`Error al obtener los registros de los usuarios en la base de datos`, error);
+        }
+    }
+
+
+    static async findActiveById(id) {
+        try {
+            const user = await findActiveRecordById('usuarios', id);
+            return user;
+        } catch (error) {
+            throw new DataBaseError(`No pudimon encontrar el usuario con el id ${id}`, error);
         }
     }
 }
