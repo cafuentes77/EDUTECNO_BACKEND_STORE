@@ -1,4 +1,4 @@
-import { ValidationError } from "../../errors/TypesError.js"
+import { NotFoundError, ValidationError, InternalServerError, DataBaseError } from "../../errors/TypesError.js"
 
 
 export class Validation {
@@ -81,5 +81,21 @@ export class Validation {
         }
     
         return { columns, values }
-      }
+    }
+
+    static isEmptyDataResponse(data) {
+        if(data.length === 0) throw new NotFoundError('No pudimos enconatrar el dato solicitado')
+            return data
+    }
+
+    static isValidFilter (filters, validFields) {
+        const filterKeys = Object.keys(filters);
+
+        for (const key of filterKeys) {
+            if(!validFields.includes(key)) {
+                throw new DataBaseError(`El campo ${key} no es válido para esta entidad`)
+            }
+        }
+    }
+
     }

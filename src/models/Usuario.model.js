@@ -6,6 +6,7 @@ import { createRecord, findActiveRecordById, findAllActiveRecords, findRecordByF
 
 
 
+
 export class Usuario {
     constructor({ id, nombre, apellido_paterno, apellido_materno, email, telefono }) {
         this.id = id;
@@ -106,6 +107,7 @@ export class Usuario {
 
     static async find(filters, condition) {
         try {
+
             const users = await findRecordByFilters('usuarios', filters, condition);
             return users;
         } catch (error) {
