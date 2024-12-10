@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { query } from '../config/db.config.js';
 import { DataBaseError, ValidationError } from '../errors/TypesError.js';
 import { Validation } from '../utils/validate/Validate.js';
-import { createRecord, findActiveRecordById, findAllActiveRecords } from '../utils/crud/crudUtils.js';
+import { createRecord, findActiveRecordById, findAllActiveRecords, findRecordByFilters } from '../utils/crud/crudUtils.js';
 
 
 
@@ -101,6 +101,18 @@ export class Usuario {
             return user;
         } catch (error) {
             throw new DataBaseError(`No pudimon encontrar el usuario con el id ${id}`, error);
+        }
+    }
+
+    static async find(filters, condition) {
+        try {
+            const users = await findRecordByFilters('usuarios', filters, condition);
+            return users;
+        } catch (error) {
+            throw new DataBaseError(`No pudimos encontrar los usuarios con los filtros:
+                ${filters} 
+                y la condición: ${condition}
+                `, error);
         }
     }
 }
