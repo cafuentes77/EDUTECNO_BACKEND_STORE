@@ -1,8 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
-import { query } from '../config/db.config.js';
 import { DataBaseError, ValidationError } from '../errors/TypesError.js';
 import { Validation } from '../utils/validate/Validate.js';
-import { createRecord, findActiveRecordById, findAllActiveRecords, findRecordByFilters } from '../utils/crud/crudUtils.js';
+import { createRecord, findActiveRecordById, findAllActiveRecords, findRecordByFilters, updateRecord } from '../utils/crud/crudUtils.js';
 
 
 
@@ -112,9 +111,20 @@ export class Usuario {
             return users;
         } catch (error) {
             throw new DataBaseError(`No pudimos encontrar los usuarios con los filtros:
-                ${filters} 
+                ${JSON.stringify(filters)} 
                 y la condición: ${condition}
                 `, error);
         }
     }
+
+
+static async update(id, data) {
+    try {
+        const updateUser = await updateRecord('usuarios', id, data);
+        return updateUser;
+    } catch (error) {
+        throw new DataBaseError(`Error al actualizar el usuario cons el ID ${id}`, error);
+    }
+}
+
 }
