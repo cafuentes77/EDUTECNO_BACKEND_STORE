@@ -9,6 +9,13 @@ export class Validation {
         return value
     }
 
+    static isString(value, fieldName) {
+        if (typeof value !== "string") {
+            throw new ValidationError(`El campo "${fieldName}" debe ser una cadena de texto`);
+        }
+        return value
+    }
+
     static name(value, fieldName) {
         const regex = /^[a-zA-ZÁ-ÿñÑ\s]+$/
         if (!regex.test(value)) {
@@ -22,8 +29,14 @@ export class Validation {
         if (!emailRegex.test(value)) {
             throw new ValidationError('El correo no es válido')
         }
-
         return value;
+    }
+
+    static isNumber(value, fieldName) {
+        const number = Number(value);
+        if (isNaN(number)) throw new ValidationError(`${fieldName} debe ser un número`);
+
+        return number
     }
 
     static isNumberInRange(value, min, max, fieldName) {
@@ -77,25 +90,25 @@ export class Validation {
 
     static isDataEmptyToDataBase(columns, values) {
         if (values.length <= 0 || columns.length <= 0) {
-          throw new InternalServerError(`Error: no podemos crear registros vacíos`);
+            throw new InternalServerError(`Error: no podemos crear registros vacíos`);
         }
-    
+
         return { columns, values }
     }
 
     static isEmptyDataResponse(data) {
-        if(data.length === 0) throw new NotFoundError('No pudimos enconatrar el dato solicitado')
-            return data
+        if (data.length === 0) throw new NotFoundError('No pudimos enconatrar el dato solicitado')
+        return data
     }
 
-    static isValidFilter (filters, validFields) {
+    static isValidFilter(filters, validFields) {
         const filterKeys = Object.keys(filters);
 
         for (const key of filterKeys) {
-            if(!validFields.includes(key)) {
+            if (!validFields.includes(key)) {
                 throw new DataBaseError(`El campo ${key} no es válido para esta entidad`)
             }
         }
     }
 
-    }
+}
