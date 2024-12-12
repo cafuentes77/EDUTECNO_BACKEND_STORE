@@ -1,7 +1,14 @@
 import { v4 as uuidv4 } from 'uuid'
 import { DataBaseError, ValidationError } from '../errors/TypesError.js';
 import { Validation } from '../utils/validate/Validate.js';
-import { createRecord, findActiveRecordById, findAllActiveRecords, findRecordByFilters, updateRecord } from '../utils/crud/crudUtils.js';
+import { 
+    createRecord, 
+    findActiveRecordById, 
+    findAllActiveRecords, 
+    findRecordByFilters, 
+    permaDeleteRecord, 
+    softDeleteRecord, 
+    updateRecord } from '../utils/crud/index.js';
 
 
 
@@ -124,6 +131,24 @@ static async update(id, data) {
         return updateUser;
     } catch (error) {
         throw new DataBaseError(`Error al actualizar el usuario cons el ID ${id}`, error);
+    }
+}
+
+static async permaDelete(id) {
+    try {
+        await permaDeleteRecord('usuarios', id);
+        return userDeleted
+    } catch (error) {
+        throw new DataBaseError(`No pudimos eliminar permanentemente al usuario`, error);
+    }
+}
+
+static async softDelete(id) {
+    try {
+        const userDeleted = await softDeleteRecord('usuarios', id);
+        return userDeleted;
+    } catch (error) {
+        throw new DataBaseError(`No pudimos eliminar permanentemente al usuario`, error);
     }
 }
 

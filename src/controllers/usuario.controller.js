@@ -1,4 +1,3 @@
-import { NotFoundError } from "../errors/TypesError.js";
 import { Usuario } from "../models/Usuario.model.js"
 import { VALID_USER_FIELD } from "../utils/constants/validateFields.js";
 import { Validation } from "../utils/validate/Validate.js";
@@ -82,6 +81,37 @@ export const updateUser = async(req, res, next) => {
             message: `Usuario Actualizado con Éxito`,
             status: 201,
             data: updatedUser
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const permaDeleteUser = async(req, res, next) => {
+    try {
+        const { id } = req.params;
+        const userDeleted = await Usuario.permaDelete(id)
+
+        res.status(200).json({
+            message: `Usuario eliminado permanentemente`,
+            status: 200,
+            dataDeleted: userDeleted
+        })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const softDeleteUser = async(req, res, next) => {
+    try {
+        const { id } = req.params
+        const userDeleted = await Usuario.softDelete(id);
+
+        res.status(200).json({
+            message: `Usuario eliminado con éxito`,
+            status: 200,
+            dataDeleted: userDeleted
         })
     } catch (error) {
         next(error)
