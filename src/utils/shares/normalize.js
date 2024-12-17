@@ -11,6 +11,8 @@ export const parseObjectToColumnsValuesArrays = (data) => {
         const columnsData = Object.keys(data);
         const valuesData = Object.values(data);
 
+
+
         const { columns, values } = Validation.isDataEmptyToDataBase(columnsData, valuesData)
 
         return {columns, values}
